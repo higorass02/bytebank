@@ -1,61 +1,82 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
-void main() {
-  runApp(MaterialApp(
-    home: Scaffold(
-      appBar: AppBar(
-        title: Text('Byte Bank - Histórico'),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: ()=>actionAdd(),
-        child: Icon(Icons.add),
-      ),
-      body: SingleChildScrollView(
-        child: ListaTransferencias(),
-      ),
-    ),
-  ),
-  );
-}
+void main() => runApp(MyApp());
 
-class	ListaTransferencias	extends	StatelessWidget{
+class MyApp extends StatelessWidget {
+  static const String _title = 'Flutter Code Sample';
+
   @override
-  Widget	build(BuildContext	context)	{
-    return	Column(
-        children:	<Widget>[
-          CartaoDeTranferencia(Transferencia(1500.00,'123')),
-          CartaoDeTranferencia(Transferencia(2500.00,'213')),
-          CartaoDeTranferencia(Transferencia(3500.00,'321')),
-        ]
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: _title,
+      home: Scaffold(
+        appBar: AppBar(title: const Text(_title)),
+        body: MyStatefulWidget(),
+      ),
     );
   }
 }
 
-class	CartaoDeTranferencia	extends	StatelessWidget	{
-  final Transferencia _transferencia;
-
-  CartaoDeTranferencia(this._transferencia);
+class MyStatefulWidget extends StatefulWidget {
+  MyStatefulWidget({Key key}) : super(key: key);
 
   @override
-  Widget	build(BuildContext	context)	{
-    return	Card(
-      child:	ListTile(
-        leading:	Icon(Icons.monetization_on),
-        title:	Text('300.0'),
-        subtitle:	Text('1000'),
-        trailing: Icon(Icons.more_vert),
+  _MyStatefulWidgetState createState() => _MyStatefulWidgetState();
+}
+
+class _MyStatefulWidgetState extends State<MyStatefulWidget> {
+  final _formKey = GlobalKey<FormState>();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(20),
+      child: Form(
+        key: _formKey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            TextFormField(
+              style: TextStyle(
+                fontSize: 24.0,
+              ),
+              keyboardType: TextInputType.number,
+              decoration: InputDecoration(
+                  labelText: 'Número	da	conta', hintText: '0000'),
+              validator: (value) {
+                if (value.isEmpty) {
+                  return 'Entre com o Número da conta';
+                }
+                return null;
+              },
+            ),
+            TextFormField(
+              style: TextStyle(
+                fontSize: 24.0,
+              ),
+              keyboardType: TextInputType.number,
+              decoration: const InputDecoration(
+                icon: Icon(Icons.monetization_on),
+                labelText: 'Valor',
+                hintText: '0.00',
+              ),
+              validator: (value) {
+                if (value.isEmpty) {
+                  return 'Entre com o Valor da Transferência';
+                }
+                return null;
+              },
+            ),
+            RaisedButton(
+                child: Text('Confirmar'),
+                onPressed: () {
+                  print('clicou	no	confirmar');
+                }
+            ),
+          ],
+        ),
       ),
     );
   }
-}
-class	Transferencia	{
-  final	double	_valor;
-  final	String	_numeroConta;
-
-  Transferencia(this._valor,	this._numeroConta);
-}
-
-actionAdd() {
-  debugPrint('clicou no ADD');
-  return null;
 }
