@@ -1,0 +1,29 @@
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(MaterialApp(
+      home: Scaffold(
+          appBar: AppBar(
+            title: Text('Super Choque'),
+          ),
+          body: SingleChildScrollView(
+            child: ComponetBody(),
+            ),
+          ),
+      ),
+  );
+}
+
+class ComponetBody extends StatelessWidget {
+  @override
+  Widget	build(BuildContext	context)	{
+    return Container(
+      child: Row(
+        children: [
+          Text('asd'),
+        ],
+      )
+    );
+  }
+}
+
