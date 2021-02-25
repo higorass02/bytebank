@@ -89,7 +89,14 @@ class CampoDeFormulario extends StatelessWidget {
 
 ////////////// LISTAGEM DE TRANSFERÊNCIA ///////////////
 
-class ListaDeTransferencias extends StatelessWidget {
+class ListaDeTransferencias extends StatefulWidget {
+
+  @override
+  ListaDeTransferenciasState createState() => ListaDeTransferenciasState();
+}
+
+class ListaDeTransferenciasState extends State<ListaDeTransferencias> {
+  List<Transferencia> transferencias = List();
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -104,17 +111,20 @@ class ListaDeTransferencias extends StatelessWidget {
 
           futuro.then((transferenciaRecebida) {
             debugPrint('Transferência recebida no then do Future $transferenciaRecebida');
+            setState(() => {
+                transferencias.add(transferenciaRecebida)
+              }
+            );
           });
 
         },
       ),
-      body: Column(
-        children: [
-          CartaoDeTransferencia(Transferencia(2500.0, 1234)),
-          CartaoDeTransferencia(Transferencia(1750.0, 3344)),
-          CartaoDeTransferencia(Transferencia(345.0, 5432)),
-          CartaoDeTransferencia(Transferencia(345.0, 5432)),
-        ],
+      body: ListView.builder(
+        itemCount: transferencias.length,
+        itemBuilder: (BuildContext ctx,int indice) {
+          Transferencia transferencia = transferencias[indice];
+          return CartaoDeTransferencia(transferencia);
+        },
       ),
     );
   }
